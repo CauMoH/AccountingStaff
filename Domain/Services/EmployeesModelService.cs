@@ -28,7 +28,7 @@ namespace Domain.Services
 
         private readonly BaseDataCollection<EmployeeModel> _employess = new BaseDataCollection<EmployeeModel>();
 
-        public ReadOnlyCollection<EmployeeModel> Employees { get; }
+        public ReadOnlyCollection<EmployeeModel> Employees { get; }       
 
         public event EventHandler EmployeesLoaded;
         public event EventHandler<IEmployeeModelCollectionChangedEventArgs> EmployeeAdded;
@@ -39,15 +39,28 @@ namespace Domain.Services
             LoadEmployess();
         }
 
-        private void LoadEmployess()
+        public void LoadEmployees(int departmentId)
         {
-            var entities = _employessRepository.LoadEmployees();
+            _employess.Clear();
+
+            var entities = _employessRepository.LoadEmployees(departmentId);
 
             _employess.SetRange(entities.Select(c => new EmployeeModel(c)));
 
             EmployeesLoaded?.Invoke(this, EventArgs.Empty);
         }
 
+        private void LoadEmployess()
+        {
+            _employess.Clear();
+
+            var entities = _employessRepository.LoadEmployees();
+
+            _employess.SetRange(entities.Select(c => new EmployeeModel(c)));
+
+            EmployeesLoaded?.Invoke(this, EventArgs.Empty);
+        }
+        
         void IEmployeesModelService.SaveEmployee(EmployeeEntity entity)
         {
             if (entity.Id == 0)
@@ -68,6 +81,11 @@ namespace Domain.Services
             {
                 _employess.Remove(emp);
             }
+        }
+
+        public void DeleteEmployees(int departmentId)
+        {
+            _employessRepository.DeleteEmployees(departmentId);
         }
     }
 

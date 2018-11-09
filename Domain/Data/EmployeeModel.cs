@@ -61,5 +61,17 @@ namespace Domain.Data
             set { _entity.Meta = value; }
         }
 
+        public int DepartmentId
+        {
+            get { return _entity.DepartmentId; }
+            set { _entity.DepartmentId = value; }
+        }
+
+        public string Office
+        {
+            get { return _entity.Office; }
+            set { _entity.Office = value; }
+        }
+
     }
 }

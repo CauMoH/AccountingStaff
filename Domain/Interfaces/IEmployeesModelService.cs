@@ -13,8 +13,10 @@ namespace Domain.Interfaces
     {
         ReadOnlyCollection<EmployeeModel> Employees { get; }
         void Load();
+        void LoadEmployees(int departmentId);
         void SaveEmployee(EmployeeEntity entity);
         void DeleteEmployees(IEnumerable<EmployeeModel> employees);
+        void DeleteEmployees(int departmentId);
 
         event EventHandler EmployeesLoaded;
         event EventHandler<IEmployeeModelCollectionChangedEventArgs> EmployeeAdded;

@@ -9,10 +9,26 @@ using DataAccess.Entities;
 namespace DataAccess.Repositories
 {
     internal sealed class EmployeesRepository : DbRepository, IEmployeesRepository
-    {
+    {      
+        public List<EmployeeEntity> LoadEmployees(int departmentId)
+        {
+            return LoadWrapped(context =>
+            {
+                return context.Employees
+                     .Where(m => m.DepartmentId == departmentId)
+                     .OrderBy(m => m.NextCourse)
+                     .ToList();
+            });
+        }
+
         public List<EmployeeEntity> LoadEmployees()
         {
-            return LoadWrapped(context => context.Employees.ToList());
+            return LoadWrapped(context =>
+            {
+                return context.Employees
+                     .OrderBy(m => m.NextCourse)
+                     .ToList();
+            });
         }
 
         public void DeleteEmployees(IEnumerable<int> employessIds)
@@ -25,6 +41,15 @@ namespace DataAccess.Repositories
                         continue;
                     context.DeleteEntity(new EmployeeEntity { Id = id });
                 }
+            });
+        }
+
+        public void DeleteEmployees(int departmentId)
+        {
+            SaveWrapped(context =>
+            {
+                var employees = context.Employees.Where(entry => entry.DepartmentId == departmentId);
+                context.Employees.RemoveRange(employees);
             });
         }
 

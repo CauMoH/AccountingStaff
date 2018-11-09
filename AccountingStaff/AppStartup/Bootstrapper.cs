@@ -71,7 +71,6 @@ namespace AccountingStaff.AppStartup
         {
             base.InitializeModules();
 
-            InitializeUi(); 
             InitializeMainWindow();
         }
 
@@ -102,22 +101,6 @@ namespace AccountingStaff.AppStartup
             Directory.SetCurrentDirectory(directory);
         }
 
-        private void InitializeUi()
-        {
-            Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline),
-                new FrameworkPropertyMetadata { DefaultValue = 30 });
-
-            try
-            {
-                var uri = new Uri("PresentationFramework.Aero2;component/themes/aero2.normalcolor.xaml", UriKind.Relative);
-                _application.Resources.MergedDictionaries.Add((ResourceDictionary)Application.LoadComponent(uri));
-            }
-            catch (Exception ex)
-            {
-                LoggerFacade.WriteError(ex);
-            }
-        }
-
         private readonly AutoResetEvent _initializedEvent = new AutoResetEvent(false);
 
         private MainViewModel _mainVm;
@@ -125,7 +108,8 @@ namespace AccountingStaff.AppStartup
 
         private void InitializeMainWindow()
         {
-            _mainVm = new MainViewModel(ServiceLocator.Current.GetInstance<IEmployeesModelService>());
+            _mainVm = new MainViewModel(ServiceLocator.Current.GetInstance<IEmployeesModelService>(),
+                                        ServiceLocator.Current.GetInstance<IDepartmentModelService>());
             _mainwindow = (Views.MainWindow)Shell;
             _mainwindow.DataContext = _mainVm;
 

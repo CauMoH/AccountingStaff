@@ -61,6 +61,15 @@ namespace AccountingStaff.ViewModels
 
         public int Id => Data.Id;
 
+        public int DepartmentId => Data.DepartmentId;
+
+        private DepartmentViewModel _department = null;
+        public DepartmentViewModel Department
+        {
+            get { return _department; }
+            set { SetProperty(ref _department, value); }
+        }
+        
         public DateTime? СompletingСourse
         {
             get { return Data.СompletingСourse; }
@@ -118,6 +127,25 @@ namespace AccountingStaff.ViewModels
                 Data.Meta = value;
                 OnPropertyChanged(nameof(Meta));
             }
+        }
+
+        public string Office
+        {
+            get { return Data.Office; }
+            set
+            {
+                if (Data.Office == value)
+                {
+                    return;
+                }
+                Data.Office = value;
+                OnPropertyChanged(nameof(Office));
+            }
+        }
+
+        public void ForceExpiredUpdated()
+        {
+            OnPropertyChanged(nameof(IsExpired));
         }
 
     }

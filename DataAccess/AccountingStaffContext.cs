@@ -23,6 +23,7 @@ namespace DataAccess
         #region Tables
 
         public DbSet<EmployeeEntity> Employees { get; set; }
+        public DbSet<DepartmentEntity> Departments { get; set; }
 
         #endregion
 
@@ -33,6 +34,7 @@ namespace DataAccess
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             modelBuilder.Configurations.Add(new EmployeeEntity.Configuration());
+            modelBuilder.Configurations.Add(new DepartmentEntity.Configuration());
 
             base.OnModelCreating(modelBuilder);
         }

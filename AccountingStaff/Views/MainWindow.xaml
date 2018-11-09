@@ -10,131 +10,218 @@
         xmlns:viewModel="clr-namespace:AccountingStaff.ViewModels"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        xmlns:localized1="clr-namespace:AccountingStaff.Localization"       
-        Height="500" Width="1000"
+        xmlns:localized1="clr-namespace:AccountingStaff.Localization"
+        xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        Height="530" Width="1040"
         MinHeight="300"
         MinWidth="600"
         Title="{x:Static localized1:strings.MainTitle}"
-        d:DataContext="{d:DesignInstance viewModel:MainViewModel }"
         Icon="/Images/ico.ico"
         Loaded="Window_Loaded"
         Closing="Window_Closing">
 
-    <DockPanel>
+    <Window.Resources>
+        <CollectionViewSource Source="{Binding Path=Departments}" x:Key="DepartmentItems"/>
 
-        <Menu DockPanel.Dock="Top">
+
+        <Style x:Key="ButtonTransparentStyle" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="Transparent">
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+    <DockPanel Name="SelfPanel">
+
+        <Menu DockPanel.Dock="Top" Panel.ZIndex="999">
+            <MenuItem Header="{x:Static localized1:strings.ChangeDepartment}" DisplayMemberPath="Name">
+                <MenuItem.ItemsSource>
+                    <CompositeCollection>
+                        <CollectionContainer Collection="{Binding Source={StaticResource DepartmentItems}}"/>
+                        <Separator/>
+                        <MenuItem Header="{x:Static localized1:strings.AllDepartments}"/>
+                    </CompositeCollection>
+                </MenuItem.ItemsSource>
+
+                <MenuItem.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="Command" Value="{Binding ElementName=SelfPanel, Path=DataContext.ChangeDepartmentCommand}" />
+                        <Setter Property="CommandParameter" Value="{Binding}"/>
+                        <Setter Property="Tag" Value="{Binding ElementName=SelfPanel, Path=DataContext}"/>
+                        <Setter Property="ContextMenu" Value="{x:Null}"/>
+                        <Setter Property="SnapsToDevicePixels" Value="true"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=DataContext, Converter={StaticResource DataTypeConverter}}"
+                                         Value="{x:Type viewModel:DepartmentViewModel}">
+                                <Setter Property="ContextMenu">
+                                    <Setter.Value>
+                                        <ContextMenu>
+                                            <MenuItem Header="{x:Static localized1:strings.Delete}" 
+                                              Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}},
+                                                        Path=PlacementTarget.Tag.RemoveDepartmentCommand}"
+                                              CommandParameter="{Binding}"/>
+                                        </ContextMenu>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.ItemContainerStyle>
+
+            </MenuItem>
+            
+            <MenuItem Header="{x:Static localized1:strings.ExportToExcel}" Command="{Binding ExportToExcelCommand}"/>
+
             <MenuItem Header="{x:Static localized1:strings.About}" Command="{Binding OpenAboutWindowCommand}"/>
         </Menu>
-
+   
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
-            <DataGrid x:Name="DataGridEmployees"
-                  Margin="2,1,10,2"
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top" Text="{Binding OpenedDepartment, Converter={StaticResource OpenedDepartmentTextConverter}}"/>
+
+                <DataGrid Grid.Row="1" x:Name="DataGridEmployees"
+                        
+                  Margin="2,1,10,2"               
                   ItemsSource="{Binding Employees}"
                   AutoGenerateColumns="False"
                   CanUserDeleteRows="False"
                   UseLayoutRounding="False"
                   ScrollViewer.IsDeferredScrollingEnabled="False"
-                  Grid.Column="0"
                   EnableRowVirtualization="True" 
-                 EnableColumnVirtualization="True"
-                 VirtualizingStackPanel.VirtualizationMode="Standard"
-                 VirtualizingStackPanel.IsVirtualizing="True"
+                  ScrollViewer.CanContentScroll="false"
+                  EnableColumnVirtualization="True"
+                  VirtualizingStackPanel.VirtualizationMode="Standard"
+                  VirtualizingStackPanel.IsVirtualizing="True"
                   LoadingRow="OnLoadingRow">
 
-                <DataGrid.Resources>
-                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
-                </DataGrid.Resources>
-                <DataGrid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="{x:Static localized1:strings.RemoveEmployee}" 
+                    <DataGrid.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black"/>
+                    </DataGrid.Resources>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="{x:Static localized1:strings.RemoveEmployee}" 
                               Command="{Binding RemoveEmployeeCommand}"
                               CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}},
                                     Path=PlacementTarget.SelectedItems}"/>
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
-                <DataGrid.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Style.Triggers>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected}" Value="True"/>
-                                    <Condition Binding="{Binding IsExpired}" Value="True"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Background" Value="MediumVioletRed"/>
-                            </MultiDataTrigger>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected}" Value="True"/>
+                                        <Condition Binding="{Binding IsExpired}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="{StaticResource SelectedExpired}"/>
+                                </MultiDataTrigger>
 
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected}" Value="False"/>
-                                    <Condition Binding="{Binding IsExpired}" Value="True"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Background" Value="PaleVioletRed"/>
-                            </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected}" Value="False"/>
+                                        <Condition Binding="{Binding IsExpired}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="{StaticResource NoSelectedExpired}"/>
+                                </MultiDataTrigger>
 
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected}" Value="True"/>
-                                    <Condition Binding="{Binding IsExpired}" Value="False"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Background" Value="LightBlue"/>
-                            </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected}" Value="True"/>
+                                        <Condition Binding="{Binding IsExpired}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="{StaticResource SelectedNoExpired}"/>
+                                </MultiDataTrigger>
 
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected}" Value="False"/>
-                                    <Condition Binding="{Binding IsExpired}" Value="False"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Background" Value="AliceBlue"/>
-                            </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected}" Value="False"/>
+                                        <Condition Binding="{Binding IsExpired}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="{StaticResource NoSelectedNoExpired}"/>
+                                </MultiDataTrigger>
 
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.CellStyle>
-                <DataGrid.RowHeaderTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow},
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.CellStyle>
+                    <DataGrid.RowHeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow},
                     Path=Header}"/>
-                    </DataTemplate>
-                </DataGrid.RowHeaderTemplate>
-                <DataGrid.Columns>
+                        </DataTemplate>
+                    </DataGrid.RowHeaderTemplate>
+                    <DataGrid.Columns>
 
-                    <DataGridTextColumn Header="{x:Static localized1:strings.Protocol}" Binding="{Binding Path=Protocol, Mode=TwoWay}"/>
-                    <DataGridTextColumn Header="{x:Static localized1:strings.Surname}" Binding="{Binding Path=Surname, Mode=TwoWay}"/>
-                    <DataGridTextColumn Header="{x:Static localized1:strings.Name}" Binding="{Binding Path=Name, Mode=TwoWay}"/>
-                    <DataGridTextColumn Header="{x:Static localized1:strings.Patronymic}" Binding="{Binding Path=Patronymic, Mode=TwoWay}"/>
-                    <DataGridTemplateColumn Header="{x:Static localized1:strings.СompletingСourse}" SortMemberPath="СompletingСourse">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding СompletingСourse,StringFormat={}{0:dd/MM/yyyy}}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                        <DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate>
-                                <DatePicker SelectedDate="{Binding СompletingСourse}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellEditingTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="{x:Static localized1:strings.NextCourse}" SortMemberPath="NextCourse">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding NextCourse,StringFormat={}{0:dd/MM/yyyy}}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                        <DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate>
-                                <DatePicker SelectedDate="{Binding NextCourse}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellEditingTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="{x:Static localized1:strings.Meta}" Binding="{Binding Path=Meta, Mode=TwoWay}"/>
-                </DataGrid.Columns>
-            </DataGrid>
+                        <DataGridTextColumn Header="{x:Static localized1:strings.Surname}" Binding="{Binding Path=Surname, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="{x:Static localized1:strings.Name}" Binding="{Binding Path=Name, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="{x:Static localized1:strings.Patronymic}" Binding="{Binding Path=Patronymic, Mode=TwoWay}"/>
+                        <DataGridTextColumn Binding="{Binding Path=Protocol, Mode=TwoWay}">
+                            <DataGridTextColumn.HeaderTemplate >
+                                <DataTemplate>
+                                    <TextBlock Text="{x:Static localized1:strings.Protocol}" Width="70" TextWrapping="Wrap"/>
+                                </DataTemplate>
+                            </DataGridTextColumn.HeaderTemplate>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="{x:Static localized1:strings.Office}" Binding="{Binding Path=Office, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="{x:Static localized1:strings.DepartmentName}" Binding="{Binding Path=Department.Name, Mode=OneWay, TargetNullValue={x:Static localized1:strings.NoDepartment}}"/>
+                        <DataGridTemplateColumn SortMemberPath="СompletingСourse">
+                            <DataGridTemplateColumn.HeaderTemplate >
+                                <DataTemplate>
+                                    <TextBlock Text="{x:Static localized1:strings.СompletingСourse}" Width="75" TextWrapping="Wrap"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding СompletingСourse,StringFormat={}{0:dd/MM/yyyy}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <DatePicker SelectedDate="{Binding СompletingСourse}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn SortMemberPath="NextCourse">
+                            <DataGridTemplateColumn.HeaderTemplate >
+                                <DataTemplate>
+                                    <TextBlock Text="{x:Static localized1:strings.NextCourse}" Width="80" TextWrapping="Wrap"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding NextCourse,StringFormat={}{0:dd/MM/yyyy}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <DatePicker SelectedDate="{Binding NextCourse}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="{x:Static localized1:strings.Meta}" Binding="{Binding Path=Meta, Mode=TwoWay}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </Grid>
 
             <StackPanel Orientation="Vertical" Grid.Column="1"
                     HorizontalAlignment="Stretch"
@@ -142,86 +229,139 @@
                     Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
 
                 <Border BorderThickness="1" BorderBrush="Black">
-                    <Grid Margin="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
+                    <StackPanel Orientation="Vertical">
+                        <Grid Margin="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
 
-                        <TextBlock Text="{x:Static localized1:strings.Protocol}"
+                           <TextBlock Text="{x:Static localized1:strings.Surname}"
                            Grid.Column="0" Grid.Row="0"/>
 
-                        <TextBlock Text="{x:Static localized1:strings.Surname}"
+                            <TextBlock Text="{x:Static localized1:strings.Name}"
                            Grid.Column="0" Grid.Row="1"/>
 
-                        <TextBlock Text="{x:Static localized1:strings.Name}"
+                            <TextBlock Text="{x:Static localized1:strings.Patronymic}"
                            Grid.Column="0" Grid.Row="2"/>
 
-                        <TextBlock Text="{x:Static localized1:strings.Patronymic}"
-                           Grid.Column="0" Grid.Row="3"/>
+                            <TextBlock Text="{x:Static localized1:strings.Protocol}"
+                           Grid.Column="0" Grid.Row="3" TextWrapping="Wrap" Width="65" HorizontalAlignment="Left"/>
 
-                        <TextBlock Text="{x:Static localized1:strings.СompletingСourse}"
-                           Grid.Column="0" Grid.Row="4"/>
+                            <TextBlock Text="{x:Static localized1:strings.Office}"
+                           Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left"/>
 
-                        <TextBlock Text="{x:Static localized1:strings.NextCourse}"
+                            <TextBlock Text="{x:Static localized1:strings.Meta}"
                            Grid.Column="0" Grid.Row="5"/>
 
-                        <TextBlock Text="{x:Static localized1:strings.Meta}"
+                            <TextBlock Text="{x:Static localized1:strings.DepartmentName}"
                            Grid.Column="0" Grid.Row="6"/>
 
-                        <TextBox Grid.Column="1" Grid.Row="0"
-                           Text="{Binding TempEmployee.Protocol}"
-                         uiCommon:FocusAdvancement.AdvancesByEnterKey="True"/>
+                            <TextBlock Text="{x:Static localized1:strings.СompletingСourse}"
+                           Grid.Column="0" Grid.Row="7" TextWrapping="Wrap" Width="70" HorizontalAlignment="Left"/>
 
-                        <TextBox Grid.Column="1" Grid.Row="1"
+                            <TextBlock Text="{x:Static localized1:strings.NextCourse}"
+                           Grid.Column="0" Grid.Row="8" TextWrapping="Wrap" Width="75" HorizontalAlignment="Left"/>
+                       
+
+                            <TextBox Grid.Column="1" Grid.Row="0"
                            Text="{Binding TempEmployee.Surname}"
                              uiCommon:FocusAdvancement.AdvancesByEnterKey="True"/>
 
-                        <TextBox Grid.Column="1" Grid.Row="2"
+                            <TextBox Grid.Column="1" Grid.Row="1"
                            Text="{Binding TempEmployee.Name}"
                          uiCommon:FocusAdvancement.AdvancesByEnterKey="True"/>
 
-                        <TextBox Grid.Column="1" Grid.Row="3"
+                            <TextBox Grid.Column="1" Grid.Row="2"
                            Text="{Binding TempEmployee.Patronymic}"
                          uiCommon:FocusAdvancement.AdvancesByEnterKey="True"/>
 
-                        <DatePicker Grid.Column="1" Grid.Row="4"
+                            <TextBox Grid.Column="1" Grid.Row="3"
+                           Text="{Binding TempEmployee.Protocol}"
+                         uiCommon:FocusAdvancement.AdvancesByEnterKey="True"/>
+
+                            <TextBox Grid.Column="1" Grid.Row="4"
+                           Text="{Binding TempEmployee.Office}"
+                         uiCommon:FocusAdvancement.AdvancesByEnterKey="True"/>
+
+                            <TextBox Grid.Column="1" Grid.Row="5"
+                           Text="{Binding TempEmployee.Meta}"
+                         uiCommon:FocusAdvancement.AdvancesByEnterKey="True"/>
+
+                            <ComboBox x:Name="DepartmentsComboBox"
+                                      Grid.Column="1" Grid.Row="6"
+                                      SelectionChanged="TempEmployeeDepartment_OnSelectionChanged"
+                                      ItemsSource="{Binding Departments}" DisplayMemberPath="Name">
+                            </ComboBox>
+
+                            <DatePicker Grid.Column="1" Grid.Row="7"
                             SelectedDate="{Binding TempEmployee.СompletingСourse,
                                             Mode=TwoWay,
                                             TargetNullValue={x:Static System:DateTime.Now}}"/>
 
-                        <DatePicker Grid.Column="1" Grid.Row="5"
+                            <DatePicker Grid.Column="1" Grid.Row="8"
                             SelectedDate="{Binding TempEmployee.NextCourse,
                                             Mode=TwoWay,
                                             TargetNullValue={x:Static System:DateTime.Now}}"/>
 
-                        <TextBox Grid.Column="1" Grid.Row="6"
-                           Text="{Binding TempEmployee.Meta}"
-                         uiCommon:FocusAdvancement.AdvancesByEnterKey="True"/>
-
-                    </Grid>
+                        </Grid>
+                        
+                        <Line X1="0" X2="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=ActualWidth}" StrokeThickness="1" Margin="5" Stroke="Black"/>
+                        
+                        <Button Margin="10,0,10,5" Content="{x:Static localized1:strings.AddEmployee}"
+                    Command="{Binding CreateNewEmployeeCommand}"/>
+                    </StackPanel>
                 </Border>
 
-                <Button Margin="10" Content="{x:Static localized1:strings.AddEmployee}"
-                    Command="{Binding CreateNewEmployeeCommand}"/>
+                <Border BorderThickness="1" Margin="0,10,0,0" BorderBrush="Black">
+                    <StackPanel Orientation="Vertical">
+
+                        <Grid Margin="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="{x:Static localized1:strings.DepartmentName}"
+                           Grid.Column="0"/>
+
+                            <TextBox Grid.Column="1"
+                           Text="{Binding TempDepartment.Name}"/>
+
+                        </Grid>
+
+                        <Line X1="0" X2="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=ActualWidth}" StrokeThickness="1" Margin="5" Stroke="Black"/>
+
+                        <Button Margin="10,0,10,5" Content="{x:Static localized1:strings.AddDepartment}"
+                    Command="{Binding CreateNewDepartmentCommand}"/>
+
+                    </StackPanel>
+                </Border>
 
                 <Border BorderThickness="1"
                     BorderBrush="Black"
-                    Margin="10">
+                    Margin="0,10,0,0">
 
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Right">
-                        <TextBlock Margin="10">
-                        <Run Text="{x:Static localized1:strings.Counter}"/>
+                        <TextBlock Margin="10" HorizontalAlignment="Right">
+                        <Run Text="{x:Static localized1:strings.CounterEmployees}"/>
                         <Run Text="{Binding Employees.Count, Mode=OneWay}" FontWeight="Bold"/>
+                        </TextBlock>
+
+                        <TextBlock Margin="10" HorizontalAlignment="Right">
+                        <Run Text="{x:Static localized1:strings.CounterDepartments}"/>
+                        <Run Text="{Binding Departments.Count, Mode=OneWay}" FontWeight="Bold"/>
                         </TextBlock>
 
                         <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10">

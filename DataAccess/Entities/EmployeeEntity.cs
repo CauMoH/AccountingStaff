@@ -17,6 +17,9 @@ namespace DataAccess.Entities
         public DateTime? NextCourse { get; set; }
         public string Protocol { get; set; }
         public string Meta { get; set; }
+        public string Office { get; set; }
+
+        public int DepartmentId { get; set; }
 
         #region Configuration
 

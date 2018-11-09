@@ -70,11 +70,29 @@ namespace AccountingStaff.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Добавить подразделение.
+        /// </summary>
+        public static string AddDepartment {
+            get {
+                return ResourceManager.GetString("AddDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Добавить работника.
         /// </summary>
         public static string AddEmployee {
             get {
                 return ResourceManager.GetString("AddEmployee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Полный список.
+        /// </summary>
+        public static string AllDepartments {
+            get {
+                return ResourceManager.GetString("AllDepartments", resourceCulture);
             }
         }
         
@@ -88,11 +106,56 @@ namespace AccountingStaff.Localization {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Кол-во записей в базе: .
+        ///   Ищет локализованную строку, похожую на Выбор подразделения.
         /// </summary>
-        public static string Counter {
+        public static string ChangeDepartment {
             get {
-                return ResourceManager.GetString("Counter", resourceCulture);
+                return ResourceManager.GetString("ChangeDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Кол-во подразделений: .
+        /// </summary>
+        public static string CounterDepartments {
+            get {
+                return ResourceManager.GetString("CounterDepartments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Кол-во работников: .
+        /// </summary>
+        public static string CounterEmployees {
+            get {
+                return ResourceManager.GetString("CounterEmployees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Удалить.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Подразделение.
+        /// </summary>
+        public static string DepartmentName {
+            get {
+                return ResourceManager.GetString("DepartmentName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Экспорт в Excel.
+        /// </summary>
+        public static string ExportToExcel {
+            get {
+                return ResourceManager.GetString("ExportToExcel", resourceCulture);
             }
         }
         
@@ -133,11 +196,20 @@ namespace AccountingStaff.Localization {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Слудующие курсы.
+        ///   Ищет локализованную строку, похожую на Дата следующего обучения.
         /// </summary>
         public static string NextCourse {
             get {
                 return ResourceManager.GetString("NextCourse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Без подразделения.
+        /// </summary>
+        public static string NoDepartment {
+            get {
+                return ResourceManager.GetString("NoDepartment", resourceCulture);
             }
         }
         
@@ -147,6 +219,15 @@ namespace AccountingStaff.Localization {
         public static string Number {
             get {
                 return ResourceManager.GetString("Number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Должность.
+        /// </summary>
+        public static string Office {
+            get {
+                return ResourceManager.GetString("Office", resourceCulture);
             }
         }
         
@@ -169,7 +250,7 @@ namespace AccountingStaff.Localization {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Протокол.
+        ///   Ищет локализованную строку, похожую на Номер протокола.
         /// </summary>
         public static string Protocol {
             get {
@@ -187,6 +268,15 @@ namespace AccountingStaff.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Удалить всех работников, связанных с этим подразделением?.
+        /// </summary>
+        public static string RemoveEmployees {
+            get {
+                return ResourceManager.GetString("RemoveEmployees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Фамилия.
         /// </summary>
         public static string Surname {
@@ -196,7 +286,16 @@ namespace AccountingStaff.Localization {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Текущие курсы.
+        ///   Ищет локализованную строку, похожую на Внимание!.
+        /// </summary>
+        public static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Дата последнего обучения.
         /// </summary>
         public static string СompletingСourse {
             get {

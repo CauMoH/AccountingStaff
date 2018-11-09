@@ -23,10 +23,7 @@ namespace DataAccess.Repositories
 
         private static string DbFolderPath => Path.Combine(GetAppDataFolderPath(), DbFolderName);
 
-        internal static string ConnectionString
-        {
-            get { return string.Format("Data Source={0}", DbFilePath); }
-        }
+        internal static string ConnectionString => $"Data Source={DbFilePath}";
 
         private void InitializeDb()
         {
@@ -35,11 +32,19 @@ namespace DataAccess.Repositories
                 Directory.CreateDirectory(DbFolderPath);
             }
 
-            using (var context = new AccountingStaffContext(ConnectionString))
+            try
             {
-                var created = context.Database.CreateIfNotExists();
-                context.Database.Initialize(false);
+                using (var context = new AccountingStaffContext(ConnectionString))
+                {
+                    var created = context.Database.CreateIfNotExists();
+                    context.Database.Initialize(false);
+                }
             }
+            catch (Exception)
+            {
+                
+            }
+
         }
 
         private AccountingStaffContext GetContext()

@@ -14,6 +14,7 @@ namespace Domain
         public static void Initialize(IUnityContainer container)
         {
             container.RegisterType<IEmployeesModelService, EmployeesModelService>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IDepartmentModelService, DepartmentModelService>(new ContainerControlledLifetimeManager());
         }
     }
 }

@@ -18,6 +18,7 @@ namespace DataAccess
             DbRepository.GetAppDataFolderPath = getAppDataFolderPath;
 
             container.RegisterType<IEmployeesRepository, EmployeesRepository>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IDepartmentsRepository, DepartmentsRepository>(new ContainerControlledLifetimeManager());
         }
     }
 }

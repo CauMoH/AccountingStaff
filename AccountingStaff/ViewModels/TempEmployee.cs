@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccess.Entities;
+using Domain.Data;
 
 namespace AccountingStaff.ViewModels
 {
@@ -57,5 +59,20 @@ namespace AccountingStaff.ViewModels
             get { return _meta; }
             set { SetProperty(ref _meta, value); }
         }
+
+        private string _office = string.Empty;
+        public string Office
+        {
+            get { return _office; }
+            set { SetProperty(ref _office, value); }
+        }
+
+        private int _departmentId = -1;
+        public int DepartmentId
+        {
+            get { return _departmentId; }
+            set { SetProperty(ref _departmentId, value); }
+        }
+        
     }
 }

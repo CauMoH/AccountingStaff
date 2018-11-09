@@ -117,85 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>О Программе</value>
+  <data name="Target" xml:space="preserve">
+    <value>H4sIAAAAAAAEAO1ZS27jRhDdB8gdCK49atmeRWJQM/DIdmBk/MHQnn2LLMpEmt1Md1OQjpNzzCJXyE1yhVTz/5UoQfZkMTBgWN1Vr75dH/nfb387H9cRs1YgVSj4zD6dTG0LuCf8kC9ndqKDd7/YHz/8/JNz7Udr62tBd27okJOrmf2idXxBiPJeIKJqEoWeFEoEeuKJiFBfkLPp9FdyekoAIWzEsiznS8J1GEH6AT/OBfcg1glld8IHpvJzvHFTVOueRqBi6sHMvqKaXnoeKGVblyykqIELLLAtyrnQVKN+F88KXC0FX7oxHlD2tIkB6QLKFOR6X1TkY02YnhkTSMVYQHmJ0iLaE/D0PPcJabMf5Fm79Bl67Rq9qzfG6tRz6DSIqdQRcJ1d2VZb6MWcScNQd/AkJQ5BTdr8J1ZFdVKmBWaP+Tmx5gnTiYQZh0RLyk6sx2TBQu932DyJP4DPeMJYXWFUGe8aB3j0KEUMUm++QJCbcevbFmnykTZjyVbjyQy75fr8zLbuUThdMCjzoeYEVwsJvwEHSTX4j1RrkNxgQO42slWW+V1IwwTEN2Rbd3T9GfhSv8zs99MpPpubcA1+cZSr8MxDfHPIpWUCTSkOqaK5NcbXUczEBuCwCDe5f8T3zeLbleImkr+JILQfi+QG68rry/rnL4EZBhrh8c9EqtI+zDR4CqOdCPew1vODOPGjFp5gr2/lHWj6+lKqarw7+ceXEmzCmob4NHIp+PqFadPYRTUNAnONEeipK9ht89Kicv2b2mfwLuiO+tjCK42yPt5pNR1ntOGKytUH1q6Jfd4o7a6mDpKNHcV4QgbmE+eOxjH6pzav5CeWmw0r83fu/t08yjCIp3qaeqltKQlLGl1C6xZFo6Y3oVTaVPIFNbkw96MO2UCUB1xeCO0Gsl3cq1AUPObvnK/qP51ot3Aql96glYYuNRhKjXpmmw5EOkdSRmVP65gLlkR8qP1s486aQZ0/O+kiOKRlQ9tZpOOtVhNsB2BUeKqHcWBwWq9n/9DsAvjegRlCKDtwHaQ8HI9Tb7B1qPr5eLS+FlpH7bvfw2u19trwXe18D8vLltuwuzwdj5S11DpKdjIeodku60jNmzd+uJ3+0yYppZd9qNVvnLz2716aO80gI7EtdNUq9E0jcDdKQzQxBBP3T+aCXIGcw+S9WfULsjvKwwCUzsZ8O71rLOH/n4WYKOWzPbfiN19ZQo4D1c6lZOtQt31L4SsqvRcqe8bQCvV4S+cPBw6Ctra6o+F2l7ijQQ/vbD46Wqeb136I3R3uUKT2Tnc0o+sr3NFA+za2NHWPuK91B/6xa1ixHY3YxbK+gWFbCLQj07yiGr2rDUpsE/TJK2gOXue6bdMh9W+knStQ4bKCMN9Pc/BMK6pAC5pbHogi2mhoXaOCpCfDfDNlSx0G1NN4bcbt9MuCr5QlqYkL8G/5Q6LjRF8qBdGCNdZXh2yXn+6sTZ2dh9h8UscwAdUMzct94J+SkPml3jc9STwAYdI1r9molatN7V5uSqR7wUcC5e7DLARuKv4TYH4gmHrgLl3BIbo9K/gMS+ptirlnGGR3IJpud65CupQ0UjlGxW/+y0LMv1k+/AfStR2emBkAAA==</value>
   </data>
-  <data name="AddDepartment" xml:space="preserve">
-    <value>Добавить подразделение</value>
-  </data>
-  <data name="AddEmployee" xml:space="preserve">
-    <value>Добавить работника</value>
-  </data>
-  <data name="AllDepartments" xml:space="preserve">
-    <value>Полный список</value>
-  </data>
-  <data name="AppName" xml:space="preserve">
-    <value>AccountingStaff</value>
-  </data>
-  <data name="ChangeDepartment" xml:space="preserve">
-    <value>Выбор подразделения</value>
-  </data>
-  <data name="CounterDepartments" xml:space="preserve">
-    <value>Кол-во подразделений: </value>
-  </data>
-  <data name="CounterEmployees" xml:space="preserve">
-    <value>Кол-во работников: </value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Удалить</value>
-  </data>
-  <data name="DepartmentName" xml:space="preserve">
-    <value>Подразделение</value>
-  </data>
-  <data name="ExportToExcel" xml:space="preserve">
-    <value>Экспорт в Excel</value>
-  </data>
-  <data name="Id" xml:space="preserve">
-    <value>ID</value>
-  </data>
-  <data name="MainTitle" xml:space="preserve">
-    <value>Учет работников</value>
-  </data>
-  <data name="Meta" xml:space="preserve">
-    <value>Доп. информация</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Имя</value>
-  </data>
-  <data name="NextCourse" xml:space="preserve">
-    <value>Дата следующего обучения</value>
-  </data>
-  <data name="NoDepartment" xml:space="preserve">
-    <value>Без подразделения</value>
-  </data>
-  <data name="Number" xml:space="preserve">
-    <value>№</value>
-  </data>
-  <data name="Office" xml:space="preserve">
-    <value>Должность</value>
-  </data>
-  <data name="OverdueCourses" xml:space="preserve">
-    <value>Истекшие курсы: </value>
-  </data>
-  <data name="Patronymic" xml:space="preserve">
-    <value>Отчество</value>
-  </data>
-  <data name="Protocol" xml:space="preserve">
-    <value>Номер протокола</value>
-  </data>
-  <data name="RemoveEmployee" xml:space="preserve">
-    <value>Удалить запись</value>
-  </data>
-  <data name="RemoveEmployees" xml:space="preserve">
-    <value>Удалить всех работников, связанных с этим подразделением?</value>
-  </data>
-  <data name="Surname" xml:space="preserve">
-    <value>Фамилия</value>
-  </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Внимание!</value>
-  </data>
-  <data name="СompletingСourse" xml:space="preserve">
-    <value>Дата последнего обучения</value>
+  <data name="DefaultSchema" xml:space="preserve">
+    <value>dbo</value>
   </data>
 </root>

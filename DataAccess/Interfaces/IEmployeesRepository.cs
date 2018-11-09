@@ -12,6 +12,8 @@ namespace DataAccess.Interfaces
         void SaveEmployees(IEnumerable<EmployeeEntity> employees);
         void SaveEmployee(EmployeeEntity employee);
         void DeleteEmployees(IEnumerable<int> employessIds);
+        void DeleteEmployees(int departmentId);
+        List<EmployeeEntity> LoadEmployees(int departmentId);
         List<EmployeeEntity> LoadEmployees();
     }
 }

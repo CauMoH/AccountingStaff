@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using AccountingStaff.ViewModels;
 
@@ -12,6 +13,19 @@ namespace AccountingStaff.Views
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContextChanged += MainWindow_DataContextChanged;
+        }
+
+        private void MainWindow_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var viewmodel = (MainViewModel) e.NewValue;
+            viewmodel.EmployeeCreated += Viewmodel_EmployeeCreated;
+        }
+
+        private void Viewmodel_EmployeeCreated(object sender, System.EventArgs e)
+        {
+            DepartmentsComboBox.SelectedIndex = -1;
         }
 
         public MainViewModel ViewModel => (MainViewModel)DataContext;
@@ -42,6 +56,20 @@ namespace AccountingStaff.Views
         private void OnLoadingRow(object sender, DataGridRowEventArgs e)
         {
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
+        }
+
+        private void TempEmployeeDepartment_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DepartmentViewModel department = null;
+            foreach (var addedItem in e.AddedItems)
+            {
+                department = (DepartmentViewModel) addedItem;
+                break;
+            }
+            if (department != null)
+            {
+                ViewModel.TempEmployee.DepartmentId = department.Id;
+            }
         }
     }
 }
